@@ -27,14 +27,24 @@ public class GestionController {
     private ITareasService tareasService;
 
     @GetMapping
-    @Operation(summary = "Lista todas las tareas registradas.")
+    @Operation(
+            summary = "Lista todas las tareas registradas.",
+            description = "Se debe utilizar uno de los usuarios precargados que se encuentran dentro del README_DOCKER.md, una vez enviados los datos, genera un token el cual tiene una vigencia de 60 minutos, dicho token se debe utilizar para autenticarse en los demás servicios rest ingresandolo en el candado",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Consulta exitosa.",
+                            content = @Content(schema = @Schema(implementation = DatosTareasOutDTO.class))
+                    )
+            }
+    )
     public List<DatosTareasOutDTO> consultarTareas() {
         return tareasService.consultarTareas();
     }
 
     @Operation(
             summary = "Registra una nueva tarea.",
-            description = "Crea una tarea. Lanza 409 Conflict si el nombre de la tarea ya existe.",
+            description = "El servicio recibe el nombre de la tarea y la descripción, colocando por defecto el estado Activo",
             responses = {
                     @ApiResponse(
                             responseCode = "201",
@@ -54,7 +64,7 @@ public class GestionController {
 
     @Operation(
             summary = "Actualiza una nueva tarea.",
-            description = "Crea una tarea. Lanza 404 Conflict si el nombre de la tarea ya existe.",
+            description = "El servicio recibe el nombre de la tarea y el nuevo estado, los estados precargados son Activo e Inactivo",
             responses = {
                     @ApiResponse(
                             responseCode = "200",
@@ -74,7 +84,7 @@ public class GestionController {
 
     @Operation(
             summary = "Elimina una tarea por su ID.",
-            description = "Eliminación permanente de la tarea.",
+            description = "El servicio recibe como parametro el id de la tarea.",
             responses = {
                     @ApiResponse(responseCode = "204", description = "Tarea eliminada exitosamente (No Content)."),
                     @ApiResponse(responseCode = "404", description = "No encontrado: La tarea con el ID especificado no existe.")

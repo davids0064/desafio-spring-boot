@@ -20,4 +20,4 @@ spring:
       path: /h2-console
 
 jwt:
-  secret: UnaClaveSecretaMuyLargaParaFirmarTokensEnElDesafioTecnicoDeNUEVOSPA
+  secret: Y2hhbGxlbmdlcHJldmlyZWRudWV2b3NwYQ==
