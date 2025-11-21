@@ -9,7 +9,7 @@ import com.nuevospa.gestion.jpa.entity.TareasEntity;
 import com.nuevospa.gestion.jpa.repository.EstadosTareasRepository;
 import com.nuevospa.gestion.jpa.repository.TareasRepository;
 import com.nuevospa.gestion.service.ITareasService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -17,11 +17,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class TareasService implements ITareasService {
 
-    private final TareasRepository tareasRepository;
-    private final EstadosTareasRepository estadosTareasRepository;
+    @Autowired
+    private TareasRepository tareasRepository;
+    @Autowired
+    private EstadosTareasRepository estadosTareasRepository;
 
     public List<DatosTareasOutDTO> consultarTareas() {
         return tareasRepository.findAll().stream()

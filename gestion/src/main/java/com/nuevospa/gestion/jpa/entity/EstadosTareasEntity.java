@@ -1,13 +1,9 @@
 package com.nuevospa.gestion.jpa.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 
 @Entity
 @Table(name = "estados")
-@Setter
-@Getter
 public class EstadosTareasEntity {
 
     @Id
@@ -18,4 +14,19 @@ public class EstadosTareasEntity {
     @Column(name = "estado")
     private String estado;
 
+    public Integer getIdEstado() {
+        return idEstado;
+    }
+
+    public void setIdEstado(Integer idEstado) {
+        this.idEstado = idEstado;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
 }

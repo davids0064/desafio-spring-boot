@@ -1,16 +1,12 @@
 package com.nuevospa.gestion.jpa.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table(name = "tareas")
-@Setter
-@Getter
 @Cacheable(false)
 public class TareasEntity implements Serializable {
 
@@ -35,4 +31,51 @@ public class TareasEntity implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaActualizacion;
 
+    public Integer getIdTarea() {
+        return idTarea;
+    }
+
+    public void setIdTarea(Integer idTarea) {
+        this.idTarea = idTarea;
+    }
+
+    public String getNombreTarea() {
+        return nombreTarea;
+    }
+
+    public void setNombreTarea(String nombreTarea) {
+        this.nombreTarea = nombreTarea;
+    }
+
+    public String getDescripcionTarea() {
+        return descripcionTarea;
+    }
+
+    public void setDescripcionTarea(String descripcionTarea) {
+        this.descripcionTarea = descripcionTarea;
+    }
+
+    public EstadosTareasEntity getEstadosTareasEntity() {
+        return estadosTareasEntity;
+    }
+
+    public void setEstadosTareasEntity(EstadosTareasEntity estadosTareasEntity) {
+        this.estadosTareasEntity = estadosTareasEntity;
+    }
+
+    public Date getFechaRegistro() {
+        return fechaRegistro;
+    }
+
+    public void setFechaRegistro(Date fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
+    }
+
+    public Date getFechaActualizacion() {
+        return fechaActualizacion;
+    }
+
+    public void setFechaActualizacion(Date fechaActualizacion) {
+        this.fechaActualizacion = fechaActualizacion;
+    }
 }
