@@ -1,5 +1,5 @@
 package com.nuevospa.gestion.dto;
 
-public record ActualizarTareaDTO(Integer idTarea, String estadoTarea) {
+public record ActualizarTareaDTO(String nombreTarea, String estadoTarea) {
 
 }

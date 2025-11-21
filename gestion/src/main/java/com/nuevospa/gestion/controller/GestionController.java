@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,13 +19,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/gestionar-tareas")
+@SecurityRequirement(name = "BearerAuth")
 @Tag(name = "Gestión de Tareas", description = "Endpoints para el CRUD de tareas.")
 public class GestionController {
 
     @Autowired
     private ITareasService tareasService;
 
-    @GetMapping("consultar")
+    @GetMapping
     @Operation(summary = "Lista todas las tareas registradas.")
     public List<DatosTareasOutDTO> consultarTareas() {
         return tareasService.consultarTareas();
@@ -45,18 +47,18 @@ public class GestionController {
                     )
             }
     )
-    @PostMapping("crear")
+    @PostMapping
     public ResponseEntity<DatosTareasOutDTO> crearTarea(@RequestBody CrearTareaDTO datosTareaInDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(tareasService.crearTarea(datosTareaInDTO));
     }
 
     @Operation(
-            summary = "Registra una nueva tarea.",
+            summary = "Actualiza una nueva tarea.",
             description = "Crea una tarea. Lanza 404 Conflict si el nombre de la tarea ya existe.",
             responses = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Tarea creada exitosamente.",
+                            description = "Tarea actualizada exitosamente.",
                             content = @Content(schema = @Schema(implementation = DatosTareasOutDTO.class))
                     ),
                     @ApiResponse(
@@ -65,7 +67,7 @@ public class GestionController {
                     )
             }
     )
-    @PutMapping("actualizar")
+    @PutMapping
     public ResponseEntity<DatosTareasOutDTO> actualizar(@RequestBody ActualizarTareaDTO actualizarTareaDTO) {
         return ResponseEntity.status(HttpStatus.OK).body(tareasService.actualizarTarea(actualizarTareaDTO));
     }
@@ -78,7 +80,7 @@ public class GestionController {
                     @ApiResponse(responseCode = "404", description = "No encontrado: La tarea con el ID especificado no existe.")
             }
     )
-    @DeleteMapping("eliminar/{idTarea}")
+    @DeleteMapping("/{idTarea}")
     public ResponseEntity<Void> eliminar(@PathVariable() Integer idTarea) {
         tareasService.eliminar(idTarea);
         return ResponseEntity.noContent().build();

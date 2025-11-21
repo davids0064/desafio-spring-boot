@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 @Service
@@ -39,13 +40,13 @@ public class TareasService implements ITareasService {
     }
 
     public DatosTareasOutDTO crearTarea(CrearTareaDTO datosTareaInDTO) {
-        if (tareasRepository.findByNombreTarea(datosTareaInDTO.nombreTarea()).isPresent()) {
+        if (tareasRepository.findByNombreTarea(datosTareaInDTO.nombreTarea().toUpperCase(Locale.ROOT)).isPresent()) {
             throw new GestionException("La tarea ya existe.");
         }
         EstadosTareasEntity estadoActivo = estadosTareasRepository.findByEstado("Activo")
                 .orElseThrow(() -> new GestionException("Estado inicial no configurado."));
         TareasEntity nuevaTarea = new TareasEntity();
-        nuevaTarea.setNombreTarea(datosTareaInDTO.nombreTarea());
+        nuevaTarea.setNombreTarea(datosTareaInDTO.nombreTarea().toUpperCase(Locale.ROOT));
         nuevaTarea.setDescripcionTarea(datosTareaInDTO.descripcionTarea());
         nuevaTarea.setFechaRegistro(new Date());
         nuevaTarea.setEstadosTareasEntity(estadoActivo);
@@ -62,7 +63,7 @@ public class TareasService implements ITareasService {
 
 
     public DatosTareasOutDTO actualizarTarea(ActualizarTareaDTO actualizarTareaDTO) {
-        Optional<TareasEntity> tareasEntity = tareasRepository.findById(actualizarTareaDTO.idTarea());
+        Optional<TareasEntity> tareasEntity = tareasRepository.findByNombreTarea(actualizarTareaDTO.nombreTarea().toUpperCase(Locale.ROOT));
         if (!tareasEntity.isPresent()) {
             throw new GestionException("La tarea no existe.");
         }

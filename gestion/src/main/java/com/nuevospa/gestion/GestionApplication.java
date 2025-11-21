@@ -21,15 +21,15 @@ public class GestionApplication {
 	public CommandLineRunner precargarDatos(UsuariosRepository repository, EstadosTareasRepository estadosTareasRepository, PasswordEncoder passwordEncoder) {
 		return (args) -> {
 			UsuariosEntity usuario1 = new UsuariosEntity();
-			usuario1.setUsername("davidlopez");
+			usuario1.setUsername("davidsala");
 			usuario1.setPrimerNombre("David");
-			usuario1.setSegundoNombre("Lopez");
-			usuario1.setPassword(passwordEncoder.encode("clave123"));
+			usuario1.setSegundoNombre("Salamanca");
+			usuario1.setPassword(passwordEncoder.encode("salamanca123"));
 			repository.save(usuario1);
 			UsuariosEntity usuario2 = new UsuariosEntity();
-			usuario2.setUsername("ana_garcia");
-			usuario2.setPrimerNombre("Ana");
-			usuario2.setSegundoNombre("Garcia");
+			usuario2.setUsername("carolpineda");
+			usuario2.setPrimerNombre("Carolina");
+			usuario2.setSegundoNombre("Pineda");
 			usuario1.setPassword(passwordEncoder.encode("clave124"));
 			repository.save(usuario2);
 			EstadosTareasEntity estadoActivo = new EstadosTareasEntity();
