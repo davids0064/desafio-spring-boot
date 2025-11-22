@@ -1,0 +1,4 @@
+FROM eclipse-temurin:21-jre-alpine
+COPY gestion-1.0.0.jar /app/gestion.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "/app/gestion.jar"]

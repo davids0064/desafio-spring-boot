@@ -1,0 +1,211 @@
+openapi: 3.0.3
+info:
+  title: API de Gestión de Tareas - Nuevo SPA
+  version: 1.0.0
+  description: |
+    API RESTful para la creación, consulta, actualización y eliminación de tareas.
+    Incluye autenticación JWT para todos los endpoints de gestión.
+servers:
+  - url: /api
+
+security:
+  - BearerAuth: [] # Aplicar BearerAuth por defecto a todos los endpoints (excepto los expuestos con permitAll)
+
+paths:
+  # ----------------------------------------------------------------------------
+  # AUTENTICACIÓN (Ruta Pública)
+  # ----------------------------------------------------------------------------
+  /auth/login:
+    post:
+      tags:
+        - Autenticación
+      summary: Autenticar usuario y obtener token JWT
+      operationId: createAuthenticationToken
+      security: [] # Anula la seguridad por defecto, es pública
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthRequestDTO'
+      responses:
+        '200':
+          description: OK - Autenticación exitosa.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponseDTO'
+        '401':
+          description: Unauthorized - Credenciales incorrectas.
+
+  # ----------------------------------------------------------------------------
+  # GESTIÓN DE TAREAS (Rutas Protegidas)
+  # ----------------------------------------------------------------------------
+  /gestionar-tareas:
+    get:
+      tags:
+        - Gestión de Tareas
+      summary: Lista todas las tareas registradas
+      operationId: consultarTareas
+      responses:
+        '200':
+          description: OK - Lista de tareas.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DatosTareasOutDTO'
+        '403':
+          description: Forbidden - Token no válido o ausente.
+    post:
+      tags:
+        - Gestión de Tareas
+      summary: Registra una nueva tarea
+      operationId: crearTarea
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CrearTareaDTO'
+      responses:
+        '201':
+          description: Created - Tarea creada exitosamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatosTareasOutDTO'
+        '409':
+          description: Conflict - La tarea ya se encuentra registrada (por nombre).
+    put:
+      tags:
+        - Gestión de Tareas
+      summary: Actualiza el estado de una tarea existente
+      operationId: actualizar
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActualizarTareaDTO'
+      responses:
+        '200':
+          description: OK - Tarea actualizada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatosTareasOutDTO'
+        '404':
+          description: Not Found - La tarea o el estado no existe.
+
+  /gestionar-tareas/{idTarea}:
+    delete:
+      tags:
+        - Gestión de Tareas
+      summary: Elimina una tarea por su ID
+      operationId: eliminar
+      parameters:
+        - name: idTarea
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '204':
+          description: No Content - Tarea eliminada exitosamente.
+        '404':
+          description: Not Found - La tarea no existe.
+
+
+# ==============================================================================
+# 2. COMPONENTES (SCHEMAS Y SEGURIDAD)
+# ==============================================================================
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Token JWT (Prefijo 'Bearer ' obligatorio).
+
+  schemas:
+    # --- DTOs de Autenticación ---
+    AuthRequestDTO:
+      type: object
+      properties:
+        username:
+          type: string
+          example: davidlopez
+        password:
+          type: string
+          format: password
+          example: 123456
+      required:
+        - username
+        - password
+    AuthResponseDTO:
+      type: object
+      properties:
+        jwt:
+          type: string
+          description: Token JWT que debe usarse en el encabezado Authorization.
+          example: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkYXZpZGxvcGV6IiwiaWF0IjoxNjcyNTQ1MjgwLCJleHAiOjE2NzI1NDg4ODB9.xxxxxxxxxxxxxxxxxxxxxxx
+      required:
+        - jwt
+
+    # --- DTOs de Tareas ---
+    DatosTareasOutDTO:
+      type: object
+      properties:
+        idTarea:
+          type: integer
+          format: int32
+          description: Identificador único de la tarea.
+        nombreTarea:
+          type: string
+        descripcionTarea:
+          type: string
+        estadoTarea:
+          type: string
+          example: ACTIVO
+        fechaRegistro:
+          type: string
+          format: date-time
+        fechaActualizacion:
+          type: string
+          format: date-time
+      required:
+        - idTarea
+        - nombreTarea
+        - estadoTarea
+        - fechaRegistro
+
+    CrearTareaDTO:
+      type: object
+      properties:
+        nombreTarea:
+          type: string
+          example: Implementar API First
+          description: Nombre de la nueva tarea.
+        descripcionTarea:
+          type: string
+          example: Configurar el plugin openapi-generator en Maven.
+      required:
+        - nombreTarea
+
+    ActualizarTareaDTO:
+      type: object
+      properties:
+        nombreTarea:
+          type: string
+          example: Implementar API First
+          description: ID de la tarea a actualizar.
+        estadoTarea:
+          type: string
+          description: Nuevo estado de la tarea (ej. ACTIVO, INACTIVO).
+          example: INACTIVO
+      required:
+        - idTarea
+        - estadoTarea
