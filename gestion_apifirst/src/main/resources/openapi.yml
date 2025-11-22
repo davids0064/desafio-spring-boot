@@ -9,7 +9,7 @@ servers:
   - url: /api
 
 security:
-  - BearerAuth: [] # Aplicar BearerAuth por defecto a todos los endpoints (excepto los expuestos con permitAll)
+  - BearerAuth: []
 
 paths:
   # ----------------------------------------------------------------------------
@@ -21,7 +21,7 @@ paths:
         - Autenticación
       summary: Autenticar usuario y obtener token JWT
       operationId: createAuthenticationToken
-      security: [] # Anula la seguridad por defecto, es pública
+      security: []
       requestBody:
         required: true
         content:
