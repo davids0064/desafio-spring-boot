@@ -1,4 +1,8 @@
-======== Despliegue Docker
+# Nombre: David Salamanca
+# Correo: david.salamancasia8702@gmail.com
+# Cargo: Desarrollador Java
+
+# Despliegue Docker
 Pasos:
 1. Dentro del directorio "./docker" abrir una consola de Powershell
 2. Construir las imagenes necesarias
@@ -10,7 +14,7 @@ Pasos:
 5. Abrir dentro de un browser
 	- http://localhost:8080/swagger-ui.html
 
-======== Prueba
+# Prueba
 Pasos:
 1. Dentro del swagger se encuentran 5 servicios
 	- /api/auth/login -> Servicio que permite generar el token para poder consumir los demás servicios
@@ -25,9 +29,17 @@ Pasos:
 	- /api/gestionar-tares -> Servicio GET que permite listar todas las tareas
 	- /api/gestionar-tares -> Servicio PUT que permite actualizar una tarea por nombre
 		- El servicio recibe el nombre de la tarea y el nuevo estado, los estados precargados son Activo e Inactivo
+		- Ejemplo:
+			- "nombreTarea": "Inventario"
+			- "estadoTarea": "Inactivo"
 		
 	- /api/gestionar-tares -> Servicio POST que permite registrar una tarea
 		- El servicio recibe el nombre de la tarea y la descripción, colocando por defecto el estado Activo
+		- Ejemplo:
+			- "nombreTarea": "Inventario"
+			- "descripcionTarea": "Realizar inventario en la bodega"	
 	
 	- /api/gestionar-tares/{idTarea} -> Servicio DELETE que permite eliminar una tareas
 		- El servicio recibe como parametro el id de la tarea
+		-Ejemplo:
+			- /api/gestionar-tares/1
